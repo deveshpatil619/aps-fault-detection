@@ -20,6 +20,7 @@ AUTHOR_EMAIL = "deveshpatil619@gmail.com"       ## email
 REQUIREMENT_FILE_NAME="requirements.txt" ## requirements file
 HYPHEN_E_DOT = "-e ."   
 
+
 def get_requirements()->List[str]:  ## return list that will contain the string values
     
     with open(REQUIREMENT_FILE_NAME) as requirement_file:
@@ -42,6 +43,9 @@ setuptools.setup(
     #long_description_content="text/markdown", ## type of it
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
     python_requires = ">=3.7",     ## Minimum Version of python required
+     package_dir={"": "sensor"},   ## in sensor folder we need to find the packages
+    packages=setuptools.find_packages(where="sensor"),
+
     install_requires = get_requirements(),
 
   
@@ -49,9 +53,7 @@ setuptools.setup(
         "Bug Tracker": f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}/issues",
     },
 
-    package_dir={"": "sensor"},   ## in sensor folder we need to find the packages
-    packages=setuptools.find_packages(where="sensor")
-
+   
 )
 
 
