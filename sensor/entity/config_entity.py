@@ -1,18 +1,18 @@
-import os
+## Required_imports
+import os,sys
 from datetime import datetime
 from sensor.exception import SensorException
-
-
-FILE_NAME = "sensor.csv"
-TRAIN_FILE_NAME = "train.csv"
-TEST_FILE_NAME = "test.csv"
+from sensor.constant import training_pipeline
 
 
 
 class TrainingPipelineConfig:
-    def __init__(self):  ## here the output of the pipeline modules will be stored in artifact folder
+    def __init__(self,timestamp = datetime.now()):  ## here the output of the pipeline modules will be stored in artifact folder
         try:
-            self.artifact_dir = os.path.join(os.getcwd(),"artifact",f"{datetime.now().strptime('%d_%m_%Y__%H:%M:%S')}")
+            timestamp = timestamp.strftime('%d_%m_%Y__%H:%M:%S')
+            self.pipeline_name : str = training_pipeline.PIPEINE_NAME
+            self.artifact_dir : str = os.path.join(training_pipeline.ARTIFACT_DIR,timestamp)
+            self.timestamp :str = timestamp
         except Exception as e:
             raise SensorException(e, sys)
 
@@ -21,17 +21,21 @@ class TrainingPipelineConfig:
 class DataIngestionConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         try:
-            self.database_name = "aps"
-            self.collection_name = "sensor"
-            self.data_ingestion_dir = os.path.join(training_pipeline_config.artifact_dir,"data_ingestion") ## inside the srtifact directory the data_ingestion folder will be created
-            self.feature_store_path = os.path.join(self.data_ingestion_dir,"Feature_store",FILE_NAME)
-            self.train_file_path = os.path.join(self.data_ingestion_dir,"train_dataset",TRAIN_FILE_NAME)
-            self.test_file_path = os.path.join(self.data_ingestion_dir,"test_dataset",TEST_FILE_NAME)
-            self.test_size = 0.2
+            self.database_name :str = "aps"
+            self.collection_name :str= "sensor"
 
-    def to_dict(self,)->dict:
-        try:
-            self.__dict__
+            self.data_ingestion_dir : str= os.path.join(training_pipeline_config.artifact_dir,
+            training_pipeline.DATA_INGESTION_DIR_NAME) ## inside the artifact directory the data_ingestion folder will be created
+            self.feature_store_path : str= os.path.join(self.data_ingestion_dir,
+            training_pipeline.FILE_NAME) ## FILE_NAME defined as "sensor.csv" in the constant folder/training_pipeline
+            self.train_file_path : str = os.path.join(self.data_ingestion_dir,
+            training_pipeline.TRAIN_FILE_NAME) ## TRAIN_FILE_NAME defined as "sensor.csv" in the constant folder/training_pipeline
+            self.test_file_path : str = os.path.join(self.data_ingestion_dir,
+            training_pipeline.TEST_FILE_NAME) ## TEST_FILE_NAME defined as "sensor.csv" in the constant folder/training_pipeline
+
+            self.train_test_split : float = training_pipeline.DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO
+            self.collection_name : str = training_pipeline.DATA_INGESTION_COLLECTION_NAME
+
         except Exception as e:
             raise SensorException(e,sys)
 
