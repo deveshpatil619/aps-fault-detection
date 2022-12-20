@@ -2,7 +2,7 @@
 import pandas as pd
 from sensor.logger import logging
 from sensor.exception import SensorException
-from sensor.config import mongo_client
+from sensor.config import mongo_db_connection
 import os,sys
 
 

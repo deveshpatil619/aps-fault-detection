@@ -1,5 +1,7 @@
 import pymongo
+from pymongo import MongoClient
 from sensor.constant.database import DATABASE_NAME
+from sensor.constant.database import COLLECTION_NAME
 from sensor.constant.env_variable import MONGODB_URL_KEY
 import certifi
 import os

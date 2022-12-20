@@ -4,6 +4,7 @@ from sensor.exception import SensorException
 from sensor.logger import logging
 from sensor.entity.config_entity import TrainingPipelineConfig,DataIngestionConfig
 from sensor.pipeline import training_pipeline
+from sensor.data_access.sensor_data import SensorData
 
 
 if __name__ == "__main__":
@@ -15,4 +16,9 @@ if __name__ == "__main__":
 
    # mongodb_client = MongoDBClient()
     #print(mongodb_client.database.list_collection_names())
+  
+
+
+    
+
 

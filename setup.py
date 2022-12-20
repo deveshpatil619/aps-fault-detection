@@ -39,11 +39,11 @@ setuptools.setup(
     author=AUTHOR_USER_NAME,
     author_email=AUTHOR_EMAIL,
     description="A small python package for CNN app",
-    long_description=long_description,  ## It will come from the readme file
+    long_description = long_description,  ## It will come from the readme file
     #long_description_content="text/markdown", ## type of it
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
     python_requires = ">=3.7",     ## Minimum Version of python required
-     package_dir={"": "sensor"},   ## in sensor folder we need to find the packages
+    package_dir={"": "sensor"},   ## in sensor folder we need to find the packages
     packages=setuptools.find_packages(where="sensor"),
 
     install_requires = get_requirements(),
