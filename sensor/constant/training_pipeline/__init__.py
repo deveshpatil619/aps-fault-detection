@@ -4,7 +4,7 @@ from sensor.constant.s3_bucket import TRAINING_BUCKET_NAME
 # defining common constant variable for training pipeline
 
 TARGET_COLUMN = "class"
-PIPEINE_NAME:str = "sensor"
+PIPELINE_NAME:str = "sensor"
 ARTIFACT_DIR:str = "artifact"
 FILE_NAME:str = "sensor.csv"
 
