@@ -39,7 +39,7 @@ class DataIngestion:
         pass
         """
         Feature store dataset will be split into train and test file
-        
+        """
 
         try:
             train_set, test_set = train_test_split(
@@ -68,7 +68,7 @@ class DataIngestion:
 
             logging.info(f"Exported train and test file path.")
         except Exception as e:
-            raise SensorData(e,sys) """
+            raise SensorData(e,sys) 
     
 
     def initiate_data_ingestion(self) -> DataIngestionArtifact:
