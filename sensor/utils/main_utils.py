@@ -6,17 +6,17 @@ from sensor.logger import logging
 
 
 """ Reading the yaml_file"""
-def read_yaml(file_path:str)->dict:
+def read_yaml_file(file_path: str) -> dict:
     try:
-        with open(file_path,"rb") as yaml_file:
-            return yaml.safe_load(yaml_file)   ## safe_loading the yaml file
+        with open(file_path, "rb") as yaml_file:
+            return yaml.safe_load(yaml_file)
     except Exception as e:
-        return SensorException(e,sys)
+        raise SensorException(e, sys) from e
 
     
 """ Reading the yaml_file and creating if we want the yaml_file if replace we keep to true"""
 
-def write_yaml(file_path:str,content:object,replace:bool = False) ->None:
+def write_yaml_file(file_path:str,content:object,replace:bool = False) ->None:
     try:
 
         if replace:
