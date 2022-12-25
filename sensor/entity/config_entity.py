@@ -5,7 +5,7 @@ from sensor.constant  import training_pipeline
 class TrainingPipelineConfig:
 
     def __init__(self,timestamp=datetime.now()):
-        timestamp = timestamp.strftime("%m_%d_%Y_%H_%M_%S")
+        timestamp = timestamp.strftime("%d_%m_%Y_%H:%M:%S")
         self.pipeline_name: str = training_pipeline.PIPELINE_NAME
         self.artifact_dir: str = os.path.join(training_pipeline.ARTIFACT_DIR, timestamp)
         self.timestamp: str = timestamp
@@ -68,6 +68,25 @@ class DataValidationConfig:
             )
 
             
+class DataTransformationConfig:
+
+        def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+            self.data_transformation_dir: str = os.path.join(training_pipeline_config.artifact_dir,
+            training_pipeline.DATA_TRANSFORMATION_DIR_NAME
+            )
+
+            self.data_transformed_train_file_path: str = os.path.join(self.data_transformation_dir,
+            training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR,
+            training_pipeline.TRAIN_FILE_NAME.replace("csv","npy"),)      ## replacing the csv format to npy 
+
+            self.data_transformed_test_file_path: str = os.path.join(self.data_transformation_dir,
+            training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR,
+            training_pipeline.TEST_FILE_NAME.replace("csv","npy"),)      ## replacing the csv format to npy
+
+            self.data_transformed_object_file_path: str = os.path.join(self.data_transformation_dir,
+            training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,   ## transformed object_dir name
+            training_pipeline.PREPROCSSING_OBJECT_FILE_NAME)     ## transformed pickle_file_name for data transformation
+
 
 
 
