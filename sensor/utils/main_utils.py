@@ -3,6 +3,7 @@ from sensor.exception import SensorException
 from sensor.logger import logging
 import os,sys
 import numpy as np
+import dill
 
 
 

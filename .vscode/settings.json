@@ -4,5 +4,8 @@
   "task.allowAutomaticTasks": "on",
   "workbench.editorAssociations": {
     "*.md": "vscode.markdown.preview.editor"
-  }
+  },
+  "python.analysis.extraPaths": [
+    "./env/Lib/site-packages"
+  ]
 }
