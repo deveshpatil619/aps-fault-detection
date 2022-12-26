@@ -48,7 +48,7 @@ class TrainPipeline:
 
 
 
-    def start_data_transformation(self,data_validation_artifact:DataValidationArtifact)->DataTransformationArtifact:
+    def start_data_transformation(self,data_validation_artifact:DataValidationArtifact):
         try:
             data_transformation_config = DataTransformationConfig(training_pipeline_config=self.training_pipeline_config) ## data_transformation_config file
             logging.info("starting the data transformation")

@@ -49,7 +49,7 @@ class DataTransformation:
     def get_data_transformer_object(cls)->Pipeline:  ##this method will give output as pipeline
         try:
             robust_scaler = RobustScaler()
-            simple_imputer = SimpleImputer(strategy="condtant",fill_value=0)  ## filling the missing values with 0
+            simple_imputer = SimpleImputer(strategy="constant",fill_value=0)  ## filling the missing values with 0
 
             preprocessor = Pipeline(
                 steps=[
@@ -72,12 +72,12 @@ class DataTransformation:
             ## This is for the training dataframe
             input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN],axis=1) ## dropping the target_column in train_df
             target_feature_train_df = train_df[TARGET_COLUMN]  ## taking the target column only
-            target_feature_train_df = target_feature_train_df.replace(TargetValueMapping().to_dict)  ## mapping the positive and negative of to 0 and 1
+            target_feature_train_df = target_feature_train_df.replace(TargetValueMapping().to_dict())  ## mapping the positive and negative of to 0 and 1
 
             ## For the testing dataframe
             input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN],axis=1) ## dropping the target_column in test_df
             target_feature_test_df = test_df[TARGET_COLUMN] ## taking the target column only
-            target_feature_test_df = target_feature_test_df.replace(TargetValueMapping().to_dict) ## mapping the positive and negative of to 0 and 1
+            target_feature_test_df = target_feature_test_df.replace(TargetValueMapping().to_dict()) ## mapping the positive and negative of to 0 and 1
 
 
             preprocessor_object = preprocessor.fit(input_feature_train_df)  ## creating the pre_processor object

@@ -1,5 +1,6 @@
 import os,sys
 from sensor.exception import SensorException
+from sensor.pipeline import training_pipeline
 from sensor.pipeline.training_pipeline import TrainPipeline
 
 
