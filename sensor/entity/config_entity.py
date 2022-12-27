@@ -16,7 +16,7 @@ class TrainingPipelineConfig:
 class DataIngestionConfig:
         def __init__(self,training_pipeline_config:TrainingPipelineConfig):
             self.data_ingestion_dir: str = os.path.join(
-                training_pipeline_config.artifact_dir, training_pipeline.DATA_INGESTION_DIR_NAME
+                training_pipeline_config.artifact_dir, training_pipeline.DATA_INGESTION_DIR_NAME ## making the data_ingestion directory in artifacts
             )
             self.feature_store_file_path: str = os.path.join(
                 self.data_ingestion_dir, training_pipeline.DATA_INGESTION_FEATURE_STORE_DIR, training_pipeline.FILE_NAME
@@ -37,7 +37,7 @@ class DataValidationConfig:
 
         def __init__(self,training_pipeline_config:TrainingPipelineConfig) :
             self.data_validation_dir: str = os.path.join(training_pipeline_config.artifact_dir,
-            training_pipeline.DATA_VALIDATION_DIR_NAME
+            training_pipeline.DATA_VALIDATION_DIR_NAME  ## making the data_validation directory in artifacts
             )
 
             self.valid_data_dir: str = os.path.join(self.data_validation_dir,
@@ -75,7 +75,7 @@ class DataTransformationConfig:
 
         def __init__(self,training_pipeline_config:TrainingPipelineConfig):
             self.data_transformation_dir: str = os.path.join(training_pipeline_config.artifact_dir,
-            training_pipeline.DATA_TRANSFORMATION_DIR_NAME
+            training_pipeline.DATA_TRANSFORMATION_DIR_NAME     ## making the data_transformation directory in artifacts
             )
 
             self.transformed_train_file_path: str = os.path.join(self.data_transformation_dir,
@@ -94,13 +94,24 @@ class DataTransformationConfig:
 
 
 
+class ModelTrainerConfig:
+
+        def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+            self.model_trainer_dir: str = os.path.join(training_pipeline_config.artifact_dir,
+            training_pipeline.MODEL_TRAINER_DIR_NAME
+            )
+
+            self.trained_model_file_path : str = os.path.join(self.model_trainer_dir,
+            training_pipeline.MODEL_TRAINER_TRAINED_MODEL_DIR,training_pipeline.MODEL_FILE_NAME
+            )
+
+            self.expected_accuracy: float = training_pipeline.MODEL_TRAINER_EXPECTED_SCORE
+            self.overfitting_underfitting_threshold = training_pipeline.MODEL_TRAINER_OVER_FIITING_UNDER_FITTING_THRESHOLD
 
 
 
+    
 
 
-
-
-class ModelTrainerConfig:...
 class ModelEvaluationConfig:...
 class ModelPusherConfig:...
