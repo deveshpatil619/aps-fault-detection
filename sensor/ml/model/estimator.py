@@ -3,7 +3,7 @@ from sensor.constant.training_pipeline import SAVED_MODEL_DIR,MODEL_FILE_NAME
 import os,sys
 
 
-class TargetValueMapping:    ## for the target column values that we need to map
+class TargetValueMapping:    ## for the target column values that we need to map neg to 0 and pos to 1
     def __init__(self) :
         self.neg : int = 0
         self.pos : int = 1
@@ -23,8 +23,8 @@ class SensorModel:
 
     def predict(self,x):
         try:
-            x_transform = self.preprocessor.transform(x) ## transforming the pickle file
-            y_hat = self.model.predict(x_transform)   ## predicting for the model
+            x_transform = self.preprocessor.transform(x)
+            y_hat = self.model.predict(x_transform)
             return y_hat
         except Exception as e:
             raise e
@@ -57,7 +57,7 @@ class ModelResolver:
             if len(timestamps) == 0:
                 return False
 
-            latest_model_path = self.get_best_model() ## we will call the best model to check the availability of the model.pkl file
+            latest_model_path = self.get_best_model_path() ## we will call the best model to check the availability of the model.pkl file
 
             if not os.path.exists(latest_model_path):
                 return False

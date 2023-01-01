@@ -25,7 +25,7 @@ class ModelEvaluation:
         except Exception as e:
             raise SensorException(e,sys)
 
-       
+    def initiate_model_evaluation(self)->ModelEvaluationArtifact: 
         try:
             valid_train_file_path = self.data_validation_artifact.valid_train_file_path  ##train and test files paths
             valid_test_file_path = self.data_validation_artifact.valid_test_file_path
@@ -35,6 +35,11 @@ class ModelEvaluation:
 
             ## concatinating the two dataframes
             df = pd.concat([train_df,test_df])
+            y_true = df[TARGET_COLUMN]
+            y_true.replace(TargetValueMapping().to_dict(),inplace=True)
+            df.drop(TARGET_COLUMN,axis=1,inplace=True)
+
+
 
 
 
@@ -55,21 +60,23 @@ class ModelEvaluation:
                 
                 logging.info(f"Model_Evaluation_Artifact:{model_evaluation_artifact}")
                 return model_evaluation_artifact
+
             ## if model exists then the model path will be as follows
             latest_model_path = model_resolver.get_best_model_path()
-            latest_model = load_object(file_path = latest_model_path)  ## loading the latest model
             train_model = load_object(file_path = train_model_file_path ) ## loading the train model
 
+            latest_model = load_object(file_path = latest_model_path)  ## loading the latest model
 
-            y_true = df[TARGET_COLUMN]  ## taking only the target column 
-            y_latest_pred = latest_model.predict(df)  ## prediction for the latest_model
-            y_trained_pred = train_model.predict(df)  ## prediction for train_model
+            
 
+           
+            y_trained_pred = train_model.predict(df)
+            y_latest_pred  = latest_model.predict(df)
 
-            latest_metric = get_classification_score(y_true=y_true,y_pred=y_latest_pred)  ## Performance metrics for  y_latest_pred model
             trained_metric = get_classification_score(y_true=y_true,y_pred=y_trained_pred)  ## Performance metrics for  y_trained_pred model
+            latest_metric = get_classification_score(y_true=y_true,y_pred=y_latest_pred)  ## Performance metrics for  y_latest_pred model
 
-            difference = trained_metric - latest_metric
+            difference = trained_metric.f1_score - latest_metric.f1_score
 
             if (self.model_eval_config.change_threshold < difference):
                 ##0.02 < 0.03

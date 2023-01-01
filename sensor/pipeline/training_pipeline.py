@@ -16,7 +16,7 @@ from sensor.components.model_pusher import ModelPusher
 
 
 class TrainPipeline:
-
+    is_pipeline_running =False
     def __init__(self):
         training_pipeline_config = TrainingPipelineConfig()
         
@@ -74,7 +74,7 @@ class TrainPipeline:
             model_trainer = ModelTrainer(model_trainer_config = model_trainer_config, 
             data_transformation_artifact = data_transformation_artifact)  ## passing the model_trainer_config and data_transformation_artifact as input to the model_trainer
 
-            model_trainer_artifact = model_trainer.initiate_model_trainer() ## Initiating the model_trainer and output as Modeltrainerartifact
+            model_trainer_artifact = model_trainer.initiate_model_trainer() ## Initiating the model_trainer and output as model_trainer_artifact
             logging.info (f"model_trainer completed and artifacts: {model_trainer_artifact}")
             return model_trainer_artifact
         except Exception as e:
@@ -83,16 +83,33 @@ class TrainPipeline:
 
 
 
-        
-    def start_model_evaluation(self,DataT):
+    def start_model_evaluation(self,data_validation_artifact:DataValidationArtifact,model_trainer_artifact:ModelTrainerArtifact):
         try:
-            pass
+            model_eval_config = ModelEvaluationConfig(training_pipeline_config = self.training_pipeline_config) ## model_evaluation_config file
+            logging.info("starting the model evaluation")
+            model_eval = ModelEvaluation(model_eval_config = model_eval_config, ## passing the model_eval_config and data_validation_artifact and model_trainer_artifact as input to the model_eval
+            data_validation_artifact = data_validation_artifact, model_trainer_artifact = model_trainer_artifact)
+
+            model_eval_artifact = model_eval.initiate_model_evaluation() ## Initiating the  model_evaluation and output as model_eval_artifact
+            logging.info (f"model_eval completed and artifacts: {model_eval}")
+
+            return model_eval_artifact
         except Exception as e:
             raise SensorException(e, sys)
 
-    def start_model_pusher(self):
+
+
+    def start_model_pusher(self,model_eval_artifact:ModelEvaluationArtifact):
         try:
-            pass
+            model_pusher_config = ModelPusherConfig(training_pipeline_config = self.training_pipeline_config) ## model_pusher_config file
+            logging.info("starting the model evaluation")
+            model_pusher = ModelPusher(model_pusher_config= model_pusher_config,
+            model_eval_artifact = model_eval_artifact) ## passing the model_pusher_config and model_eval_artifact as input to the model_pusher.
+
+            model_pusher_artifact = model_pusher.initiate_model_pusher() ##Initiating the model_pusher and output as model_pusher_artifact
+            logging.info(f"model_pusher completed and artifacts: {model_pusher}")
+
+            return model_pusher_artifact
         except Exception as e:
             raise SensorException(e, sys)
 
@@ -101,10 +118,16 @@ class TrainPipeline:
 
     def run_pipeline(self):
         try:
-
+            TrainPipeline.is_pipeline_running = True
             data_ingestion_artifact:DataIngestionArtifact = self.start_data_ingestion()
             data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
             data_transformation_artifact = self.start_data_transformation(data_validation_artifact=data_validation_artifact)
+            model_trainer_artifact = self.start_model_trainer(data_transformation_artifact = data_transformation_artifact)
+            model_eval_artifact =self.start_model_evaluation(data_validation_artifact = data_validation_artifact, model_trainer_artifact= model_trainer_artifact)
+            if not model_eval_artifact.is_model_accepted:
+                raise Exception("Trained model is not better than the best model")
+            model_pusher_artifact = self.start_model_pusher(model_eval_artifact = model_eval_artifact)
+            TrainPipeline.is_pipeline_running = False
         except Exception as e:
             raise SensorException(e, sys)
 
