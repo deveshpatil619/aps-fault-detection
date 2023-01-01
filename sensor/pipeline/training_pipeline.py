@@ -1,11 +1,16 @@
 import os,sys
-from sensor.entity.config_entity import TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig,DataTransformationConfig
-from sensor.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact
-from sensor.exception import SensorException
 from sensor.logger import logging
+from sensor.entity.config_entity import TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig,DataTransformationConfig
+from sensor.entity.config_entity import ModelTrainerConfig,ModelEvaluationConfig,ModelPusherConfig
+from sensor.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact
+from sensor.entity.artifact_entity import ModelEvaluationArtifact,ModelPusherArtifact,ModelTrainerArtifact
+from sensor.exception import SensorException
 from sensor.components.data_ingestion import DataIngestion
 from sensor.components.data_validation import DataValidation
 from sensor.components.data_transformation import DataTransformation
+from sensor.components.model_trainer import ModelTrainer
+from sensor.components.model_evaluation import ModelEvaluation
+from sensor.components.model_pusher import ModelPusher
 
 
 
@@ -55,13 +60,31 @@ class TrainPipeline:
             data_transformation = DataTransformation(data_validation_artifact=data_validation_artifact,
             data_transformation_config=data_transformation_config) ## passing the data_transformation_config and data_validation_artifact to data_validation
 
-            data_transformation_artifact = data_transformation.initiate_data_transformation() ## data_transformation_artifact we got output
+            data_transformation_artifact = data_transformation.initiate_data_transformation() ## Initiating the data_transformation stage and data_transformation_artifact we got as output.
             logging.info (f"data transformation completed and artifacts: {data_transformation_artifact}")
             return data_transformation_artifact
         except Exception as e:
             raise SensorException(e, sys)
 
-    def start_model_evaluation(self):
+
+    def start_model_trainer(self,data_transformation_artifact:DataTransformationArtifact):
+        try:
+            model_trainer_config = ModelTrainerConfig(training_pipeline_config=self.training_pipeline_config) ##model_trainer_config file
+            logging.info("starting the model traning")
+            model_trainer = ModelTrainer(model_trainer_config = model_trainer_config, 
+            data_transformation_artifact = data_transformation_artifact)  ## passing the model_trainer_config and data_transformation_artifact as input to the model_trainer
+
+            model_trainer_artifact = model_trainer.initiate_model_trainer() ## Initiating the model_trainer and output as Modeltrainerartifact
+            logging.info (f"model_trainer completed and artifacts: {model_trainer_artifact}")
+            return model_trainer_artifact
+        except Exception as e:
+            raise SensorException(e,sys)
+
+
+
+
+        
+    def start_model_evaluation(self,DataT):
         try:
             pass
         except Exception as e:
@@ -73,11 +96,7 @@ class TrainPipeline:
         except Exception as e:
             raise SensorException(e, sys)
 
-    def start_model_trainer(self):
-        try:
-            pass
-        except Exception as e:
-            raise SensorException(e, sys)
+    
 
 
     def run_pipeline(self):

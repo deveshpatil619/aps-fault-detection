@@ -39,7 +39,7 @@ class ModelResolver:
         except Exception as e:
             raise e
 
-    def get_best_model(self,)->str:
+    def get_best_model_path(self,)->str:
         try:
             timestamps = list(map(int,os.listdir(self.model_dir))) ## coverting the string values to int via map function and then storing into the list
             latest_timestamp = max(timestamps)  ## taking the max from the list
