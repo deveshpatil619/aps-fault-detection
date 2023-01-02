@@ -129,6 +129,7 @@ class TrainPipeline:
             model_pusher_artifact = self.start_model_pusher(model_eval_artifact = model_eval_artifact)
             TrainPipeline.is_pipeline_running = False  ## make status false when the running of pipoeline is finished
         except Exception as e:
+            TrainPipeline.is_pipeline_running = False
             raise SensorException(e, sys)
 
 
