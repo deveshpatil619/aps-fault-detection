@@ -69,7 +69,7 @@ class DataValidation:
 
 
     
-    def detect_dataset_drift(self,base_df,current_df,threshold = 0.5)->bool: ## train_df, test_df and threshold
+    def detect_dataset_drift(self,base_df,current_df,threshold = 0.05)->bool: ## train_df, test_df and threshold
         try:
             status=True
             report = {}

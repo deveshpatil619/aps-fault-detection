@@ -1,5 +1,4 @@
 import yaml
-
 from sensor.exception import SensorException
 from sensor.logger import logging
 import os,sys

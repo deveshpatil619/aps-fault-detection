@@ -6,7 +6,7 @@ from sensor.entity.artifact_entity import DataValidationArtifact,ModelTrainerArt
 from sensor.entity.config_entity import ModelEvaluationConfig
 from sensor.ml.metric.classification_metric import get_classification_score
 from sensor.ml.model.estimator import SensorModel
-from sensor.utils.main_utils import save_object,load_object,write_yaml_file
+from sensor.utils.main_utils import load_object,write_yaml_file
 from sensor.ml.model.estimator import ModelResolver
 from sensor.constant.training_pipeline import TARGET_COLUMN
 from sensor.ml.model.estimator import TargetValueMapping
@@ -76,9 +76,9 @@ class ModelEvaluation:
             trained_metric = get_classification_score(y_true=y_true,y_pred=y_trained_pred)  ## Performance metrics for  y_trained_pred model
             latest_metric = get_classification_score(y_true=y_true,y_pred=y_latest_pred)  ## Performance metrics for  y_latest_pred model
 
-            difference = trained_metric.f1_score - latest_metric.f1_score
+            improved_accuracy  = trained_metric.f1_score - latest_metric.f1_score
 
-            if (self.model_eval_config.change_threshold < difference):
+            if (self.model_eval_config.change_threshold < improved_accuracy):
                 ##0.02 < 0.03
                 is_model_accepted = True
             else:
@@ -86,14 +86,14 @@ class ModelEvaluation:
 
             model_evaluation_artifact = ModelEvaluationArtifact(
                     is_model_accepted = is_model_accepted,
-                    improved_accuracy = difference,
+                    improved_accuracy = improved_accuracy,
                     trained_model_path = train_model_file_path,
                     best_model_path= latest_model_path,
                     train_model_metric_artifact= trained_metric ,
                     best_model_metric_artifact= latest_metric)
 
             ##  creating the model_evaluation_artifact report file
-            model_eval_report = model_evaluation_artifact.__dict__()
+            model_eval_report = model_evaluation_artifact.__dict__
 
             ## saving the report
             write_yaml_file(file_path= self.model_eval_config.report_file_path, content=model_eval_report)

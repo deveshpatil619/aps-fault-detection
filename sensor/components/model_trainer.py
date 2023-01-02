@@ -1,6 +1,4 @@
 ## Importing the important libraries
-
-
 from sensor.utils.main_utils import load_numpy_array_data
 from sensor.exception import SensorException
 from sensor.logger import logging
@@ -19,7 +17,7 @@ class ModelTrainer:
         data_transformation_artifact:DataTransformationArtifact):
         try:
             self.model_trainer_config = model_trainer_config
-            self.data_transformation_artifact=data_transformation_artifact
+            self.data_transformation_artifact = data_transformation_artifact
         except Exception as e:
             raise SensorException(e,sys)
 
@@ -53,6 +51,7 @@ class ModelTrainer:
                 test_arr[:,-1]
 
             )
+
             model = self.train_model(x_train,y_train) ## training the model
             y_train_pred = model.predict(x_train)  ## predicted train values from model
             y_test_pred = model.predict(x_test)   ## predicted test values from model
