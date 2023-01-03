@@ -26,10 +26,10 @@
 	3. AmazonS3FullAccess
 
 3.Create a s3 bukcet in ap-south-1
-	bucket name: sensor-fault-detection619
+	bucket name: sensor-project-619
 	
 4. ECR repo to store/save docker image
-	860665761291.dkr.ecr.ap-south-1.amazonaws.com/sensor-fault
+	215488547972.dkr.ecr.ap-south-1.amazonaws.com/sensor-fault
 	
 5. EC2 machine  Ubuntu  Created
 
@@ -46,10 +46,15 @@
 	sudo usermod -aG docker ubuntu
 	newgrp docker
 	
-7. Configure EC2 as self-hosted runner
 
+7. Configure EC2 as self-hosted runner ## it is name of runner
+
+## go to the github in that settings and in that actions and select runner then select linux as runner image
 setting>actions>runner>new self hosted runner> choose os> 
 then run command one by one
+
+in end press ls
+then run  ./run.sh 
 
 8. Setup github secrets
 
@@ -57,10 +62,17 @@ AWS_ACCESS_KEY_ID=
 
 AWS_SECRET_ACCESS_KEY=
 
-AWS_REGION=ap-south-1
+AWS_REGION = ap-south-1
 
-AWS_ECR_LOGIN_URI=566373416292.dkr.ecr.ap-south-1.amazonaws.com
+AWS_ECR_LOGIN_URI = 215488547972.dkr.ecr.ap-south-1.amazonaws.com
+
 
 ECR_REPOSITORY_NAME=sensor-fault
 
 MONGO_DB_URL= mongodb+srv://devesh:Root@cluster0.s8lbkcs.mongodb.net/?retryWrites=true&w=majority
+
+
+
+
+
+
