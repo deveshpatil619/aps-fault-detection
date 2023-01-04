@@ -29,7 +29,7 @@
 	bucket name: sensor-project-619
 	
 4. ECR repo to store/save docker image
-	215488547972.dkr.ecr.ap-south-1.amazonaws.com/sensor-fault
+	860665761291.dkr.ecr.ap-south-1.amazonaws.com/sensor-fault
 	
 5. EC2 machine  Ubuntu  Created
 
@@ -64,7 +64,7 @@ AWS_SECRET_ACCESS_KEY=
 
 AWS_REGION = ap-south-1
 
-AWS_ECR_LOGIN_URI = 215488547972.dkr.ecr.ap-south-1.amazonaws.com
+AWS_ECR_LOGIN_URI = 860665761291.dkr.ecr.ap-south-1.amazonaws.com
 
 
 ECR_REPOSITORY_NAME=sensor-fault
