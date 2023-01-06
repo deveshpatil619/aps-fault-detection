@@ -26,7 +26,7 @@ def set_env_variable(env_file_path):
     if os.getenv('MONGO_DB_URL',None) is None:
         env_config = read_yaml_file(env_file_path)
         os.environ['MONGO_DB_URL']=env_config['MONGO_DB_URL']
-"""
+
 
 app = FastAPI()
 origins = ["*"]
@@ -80,10 +80,10 @@ async def predict_route(request:Request ,file: UploadFile = File(...)):
     except Exception as e:
         raise Response(f"Error Occured! {e}")
 
+"""
 
 
-
-"""if __name__ == "__main__":
+if __name__ == "__main__":
     try:
         training_pipeline = TrainPipeline()
         training_pipeline.run_pipeline()
@@ -91,12 +91,12 @@ async def predict_route(request:Request ,file: UploadFile = File(...)):
         #mongodb_client = MongoDBClient()
         #print(mongodb_client.database.list_collection_names())
     except Exception as e:
-        raise SensorException(e,sys)"""
+        raise SensorException(e,sys)
 
-if __name__=="__main__":
+"""if __name__=="__main__":
     #main()
     # set_env_variable(env_file_path)
-    app_run(app, host=APP_HOST, port=APP_PORT)
+    app_run(app, host=APP_HOST, port=APP_PORT)"""
 
 
    
